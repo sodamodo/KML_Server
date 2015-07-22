@@ -48,7 +48,7 @@ for val in values:
 
 
 
-f = open('points.csv', 'wb')
+f = open('raw_points.csv', 'wb')
 
 # writer = csv.DictWriter(open('points.csv', 'w'), delimiter=',', lineterminator='\n', fieldnames=['name', 'latitude', 'longitude', 'value'], extrasaction='ignore')
 # writer = csv.writer('points.csv', 'wb')
@@ -73,12 +73,13 @@ name = data_dict.get('name')
 latitude = data_dict.get('latitude')
 longitude = data_dict.get('longitude')
 value = data_dict.get('value')
-print value
+# print value
 
 raw_data = []
 for i in xrange(0, len(aggregated)):
     # raw_data.append("{}, {}, {}, {}".format([name[i], latitude[i], longitude[i], value[i]]))
-    writer.writerow(name[i], latitude[i], longitude[i], value[i])
+    writer.writerow((name[i], latitude[i], longitude[i], value[i]))
+    # raw_data.append([name[i], latitude[i], longitude[i], value[i]])
     # writer.writerow("{}, {}, {}, {}".format(name[i], latitude[i], longitude[i], value[i]))
 print raw_data
 # print(data_dict)

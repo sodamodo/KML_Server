@@ -2,8 +2,6 @@ import xml.etree.ElementTree as etree
 from lxml.etree import ElementTree, Element, SubElement, tostring
 from xml.dom import minidom
 import csv
-from getpoints import Scrape
-
 
 def placemark(row, i):
 
@@ -37,32 +35,32 @@ def placemark(row, i):
     return placemark
 
 
-def CSVToXML():
-    table = Scrape.getdata()
-    #open files
-    pointsfile = open('kml_points.kml', 'wb')
-    f = open("points.csv", 'rt')
-
-    kml = Element('kml', xmlns="http://www.opengis.net/kml/2.2")
-    document = Element("Document")
-    kml.append(document)
-
-    # reader = csv.reader(Scrape.getdata())
-
-    i = 0
-    for row in table:
-        i += 1
-        document.append(placemark(row, i))
-
-    f.close()
 
 
-    kmlstring = tostring(kml)
-    # print kmlstring
-    print(tostring(kml, pretty_print=True))
-    # pointsfile.write(kmlstring)
-    # pointsfile.close()
-    print "done!"
+
+pointsfile = open('kml_points.kml', 'wb')
+f = open("raw_points.csv", 'rt')
+
+kml = Element('kml', xmlns="http://www.opengis.net/kml/2.2")
+document = Element("Document")
+kml.append(document)
+
+
+
+i = 0
+for row in f:
+    i += 1
+    document.append(placemark(row, i))
+
+f.close()
+
+
+kmlstring = tostring(kml)
+# print kmlstring
+print(tostring(kml, pretty_print=True))
+# pointsfile.write(kmlstring)
+# pointsfile.close()
+print "done!"
 
 
 
