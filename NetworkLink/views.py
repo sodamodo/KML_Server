@@ -8,7 +8,7 @@ from django.core.servers.basehttp import FileWrapper
 # Create your views here.
 
 def path(request):
-    load_path = os.path.join(settings.BASE_DIR, "NetworkLink", "points.kml")
+    load_path = os.path.join(settings.BASE_DIR, "NetworkLink", "static", "points.kml")
 
     downloadfile = open(load_path, 'rb')
 
