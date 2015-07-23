@@ -82,15 +82,46 @@ def makelists():
 
     return nameform, latform, lonform, values
 
-print makelists()[3][0][0]
+# print makelists()
+print "Hiiii!"
+
+data = makelists()
+
+
+collection = [[data[0], data[1], data[2], data[3]]]
+
+names = data[0]
+lat = data[1]
+lon = data[2]
+val = data[3]
+
+print len(val)
+
+for i in len(val)+1:
+    print val[i][0], val[i][1], val[i][2], val[i][3]
+
+
+# lat =
+# print names
+
+# for i in range(len(names)):
+#     print len(names)
+#     print names[i]
+
+# , datavalues[0][0], datavalues[0][0], datavalues[0][0]
+# print len(names)
+
+
 
 # aggregated = []
-# for i in xrange(0, len(nameform)):
-#     aggregated.append([names[i][0], float(latitude[i][0]), float(longitude[i][0]), float(values[i][0])])
-#     # print aggregated[i]
-#     # writer.writerow(aggregated[i])
-#
-#
+# for i in range(0, len(makelists())):
+#     aggregated.append([makelists()[0], makelists()[1], makelists()[2], makelists()[3]])
+#     print aggregated[i]
+    # writer.writerow(aggregated[i])
+
+
+
+
 #
 # data_dict = defaultdict(list)
 # for i in xrange(0, len(aggregated)):
