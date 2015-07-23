@@ -2,6 +2,11 @@ import xml.etree.ElementTree as etree
 from lxml.etree import ElementTree, Element, SubElement, tostring
 from xml.dom import minidom
 import csv
+from bs4 import BeautifulSoup
+import requests
+import csv
+from collections import defaultdict
+
 
 def placemark(row, i):
 
@@ -40,6 +45,8 @@ def placemark(row, i):
 
 pointsfile = open('kml_points.kml', 'wb')
 f = open("raw_points.csv", 'rt')
+print(f)
+
 
 kml = Element('kml', xmlns="http://www.opengis.net/kml/2.2")
 document = Element("Document")

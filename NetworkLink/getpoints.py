@@ -10,7 +10,6 @@ r = requests.get('http://waterservices.usgs.gov/nwis/iv/?format=waterml,1.1&inde
 
 soup = BeautifulSoup(r.text, "lxml-xml")
 
-
 names = []
 for r in soup.find_all("siteName"):
     names.append(r.contents)
