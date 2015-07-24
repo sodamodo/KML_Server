@@ -13,6 +13,17 @@ def placemark(row, i):
     placemark = Element('Placemark', id=str(i))
     treeElement = ElementTree(placemark)
     name = Element('name')
+
+        ##data test##
+
+    extended_data = Element('ExtendedData')
+    data = Element('Data', name="holeNumber")
+    value = Element('value')
+    value.text = str(i)
+    data.append(value)
+    extended_data.append(extended_data)
+
+
     description = Element('description')
     point = Element('Point')
     coordinates = SubElement(point, "coordinates")
@@ -22,6 +33,7 @@ def placemark(row, i):
     placemark.append(name)
     placemark.append(description)
     placemark.append(point)
+    placemark.append(extended_data)
 
     ##Styling information
     style = Element("Style", id="ID")
@@ -80,30 +92,40 @@ def makelists():
     for val in values:
         valform.append(float(val[0]))
 
-    return nameform, latform, lonform, values
+    data = [nameform, latform, lonform, values]
+    return data
+
+
+kml = Element('kml', xmlns="http://www.opengis.net/kml/2.2")
+document = Element("Document")
+kml.append(document)
+
+f = open("teh_kml.kml", 'wb')
+i = 0
+for row in f:
+    i += 1
+    document.append(placemark(row, i))
+f.close()
+
 
 # print makelists()
-print "Hiiii!"
+# print "Hiiii!"
+# data = makelists()
+# collection = [[data[0], data[1], data[2], data[3]]]
 
-data = makelists()
-
-
-collection = [[data[0], data[1], data[2], data[3]]]
-
-names = data[0]
-lat = data[1]
-lon = data[2]
-val = data[3]
-
-print len(val)
-
-for i in len(val)+1:
-    print val[i][0], val[i][1], val[i][2], val[i][3]
+# names = data[0]
+# lat = data[1]
+# lon = data[2]
+# val = data[3]
+#
+# print len(val)
+#
+# for i in len(val)+1:
+#     print val[i][0], val[i][1], val[i][2], val[i][3]
 
 
 # lat =
-# print names
-
+# print namesou
 # for i in range(len(names)):
 #     print len(names)
 #     print names[i]

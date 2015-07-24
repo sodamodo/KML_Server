@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup
+efrom bs4 import BeautifulSoup
 import requests
 import csv
 from collections import defaultdict

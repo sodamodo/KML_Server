@@ -14,6 +14,9 @@ def placemark(row, i):
     placemark = Element('Placemark', id=str(i))
     treeElement = ElementTree(placemark)
     name = Element('name')
+
+
+
     description = Element('description')
     point = Element('Point')
     coordinates = SubElement(point, "coordinates")
@@ -23,6 +26,8 @@ def placemark(row, i):
     placemark.append(name)
     placemark.append(description)
     placemark.append(point)
+
+
 
     ##Styling information
     style = Element("Style", id="ID")
@@ -44,8 +49,7 @@ def placemark(row, i):
 
 
 pointsfile = open('kml_points.kml', 'wb')
-f = open("raw_points.csv", 'rt')
-print(f)
+
 
 
 kml = Element('kml', xmlns="http://www.opengis.net/kml/2.2")
@@ -54,19 +58,19 @@ kml.append(document)
 
 
 
+f = open("teh_kml.kml", 'rt')
 i = 0
 for row in f:
     i += 1
     document.append(placemark(row, i))
-
 f.close()
 
 
 kmlstring = tostring(kml)
 # print kmlstring
 print(tostring(kml, pretty_print=True))
-# pointsfile.write(kmlstring)
-# pointsfile.close()
+pointsfile.write(kmlstring)
+pointsfile.close()
 print "done!"
 
 
