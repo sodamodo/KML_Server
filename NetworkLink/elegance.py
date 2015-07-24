@@ -5,12 +5,14 @@ import csv
 from bs4 import BeautifulSoup
 import requests
 import csv
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 
-def placemark(row, i):
+Point = namedtuple('Point', ['name', 'lat', 'long', 'data'])
+
+def placemark(row):
 
 
-    placemark = Element('Placemark', id=str(i))
+    placemark = Element('Placemark', id=row.name)
     treeElement = ElementTree(placemark)
     name = Element('name')
 
@@ -19,9 +21,9 @@ def placemark(row, i):
     extended_data = Element('ExtendedData')
     data = Element('Data', name="holeNumber")
     value = Element('value')
-    value.text = str(i)
+    value.text = row.data[0]
     data.append(value)
-    extended_data.append(extended_data)
+    extended_data.append(data)
 
 
     description = Element('description')
@@ -29,7 +31,7 @@ def placemark(row, i):
     coordinates = SubElement(point, "coordinates")
     # name.text = row[0]
     description.text = "Attached to the ground. Intelligently places itself at the height of the underlying terrain"
-    coordinates.text = '{},{}'.format(row[2], row[1])
+    coordinates.text = '{},{}'.format(row.long, row.lat)
     placemark.append(name)
     placemark.append(description)
     placemark.append(point)
@@ -92,20 +94,71 @@ def makelists():
     for val in values:
         valform.append(float(val[0]))
 
-    data = [nameform, latform, lonform, values]
-    return data
+    data = zip(nameform, latform, lonform, values)
+    points = [Point(*point) for point in data]
+    # points = [Point(name, lat, long, data) for name, lat, long ,data in data]
+    return points
 
 
 kml = Element('kml', xmlns="http://www.opengis.net/kml/2.2")
 document = Element("Document")
+document.text = "doooz" # delete later
 kml.append(document)
 
 f = open("teh_kml.kml", 'wb')
-i = 0
-for row in f:
-    i += 1
-    document.append(placemark(row, i))
+
+# print tostring(kml)
+
+# range(len(makelists()[0]))
+
+rows = makelists()
+
+kml = Element('kml', xmlns="http://www.opengis.net/kml/2.2")
+# kml.text = "DocTest"
+document = Element("Document")
+kml.append(document)
+
+# print("ROWS")
+for row in rows:
+    # print row.name, row.lat, row.long, row.data
+    document.append(placemark(row))
+    # print(tostring((document)))
+
+print tostring(kml, pretty_print=True)
+f.write(tostring(kml))
 f.close()
+print "done!"
+
+f.close()
+
+
+# i = 0
+# for row in f:
+#     i += 1
+#     document.append(placemark(row, i))
+
+
+# pointsfile = open('kml_points.kml', 'wb')
+
+
+
+
+
+
+
+# f = open("teh_kml.kml", 'rt')
+
+
+# f.close()
+
+#
+# kmlstring = tostring(kml)
+# # print kmlstring
+# print(tostring(kml, pretty_print=True))
+# pointsfile.write(kmlstring)
+# pointsfile.close()
+# print "done!"
+
 
 
 # print makelists()

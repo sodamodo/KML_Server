@@ -58,14 +58,15 @@ kml.append(document)
 
 
 
-f = open("teh_kml.kml", 'rt')
+# f = open("teh_kml.kml", 'rt')
 i = 0
 for row in f:
     i += 1
     document.append(placemark(row, i))
+
 f.close()
 
-
+# print kmlstring
 kmlstring = tostring(kml)
 # print kmlstring
 print(tostring(kml, pretty_print=True))
