@@ -22,25 +22,37 @@ def placemark(row):
 
     extended_data = Element('ExtendedData')
     # data = Element('Data', name="holeNumber")
-    data = Element('Data', name="string")
+
     displayname = Element('displayName')
     displayname.text = "Hiiiii!"
     # name = Element('name')
     name.text = row[0]
-    value = Element('value')
-    value.text = row.data[0]
 
-    extended_data.append(data)
-    # data.append(displayname)
-    data.append(value)
+
+
+    streamtitle = Element('Data', name="Rivername")
+    streamflow = Element('Data', name="Stream Flow")
+    streamtitle.text = "{}".format(row.name)
+    # streamtitle.text = row.data[3]
+    extended_data.append(streamtitle)
+    # extended_data.append(streamtitle)
+
+    # flow_name = Element('value')
+    # flow_name.text = row.data[0]
+    #
+    # name_name = Element('value')
+    # name_name.text = row.data[0]
+    #
+    # flow_name.append(value)
 
 
     # description = Element('description')
     point = Element('Point')
     coordinates = SubElement(point, "coordinates")
+    coordinates.text = '{},{}'.format(row.long, row.lat)
 
     # description.text = "Attached to the ground. Intelligently places itself at the height of the underlying terrain"
-    coordinates.text = '{},{}'.format(row.long, row.lat)
+
     placemark.append(name)
     # placemark.append(description)
     placemark.append(extended_data)
@@ -131,7 +143,7 @@ kml.append(document)
 
 # print("ROWS")
 name = Element("name")
-name.text = "Golf Course"
+name.text = "Guaging Stations"
 document.append(name)
 
 for row in rows:
