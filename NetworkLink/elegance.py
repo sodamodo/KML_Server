@@ -10,32 +10,43 @@ from collections import defaultdict, namedtuple
 Point = namedtuple('Point', ['name', 'lat', 'long', 'data'])
 
 def placemark(row):
+    # for i in range(len(row.name)):
+    #     print i
 
 
-    placemark = Element('Placemark', id=row.name)
+    placemark = Element('Placemark')
     treeElement = ElementTree(placemark)
     name = Element('name')
 
         ##data test##
 
     extended_data = Element('ExtendedData')
-    data = Element('Data', name="holeNumber")
+    # data = Element('Data', name="holeNumber")
+    data = Element('Data', name="string")
+    displayname = Element('displayName')
+    displayname.text = "Hiiiii!"
+    # name = Element('name')
+    name.text = row[0]
     value = Element('value')
     value.text = row.data[0]
-    data.append(value)
+
     extended_data.append(data)
+    # data.append(displayname)
+    data.append(value)
 
 
-    description = Element('description')
+    # description = Element('description')
     point = Element('Point')
     coordinates = SubElement(point, "coordinates")
-    # name.text = row[0]
-    description.text = "Attached to the ground. Intelligently places itself at the height of the underlying terrain"
+
+    # description.text = "Attached to the ground. Intelligently places itself at the height of the underlying terrain"
     coordinates.text = '{},{}'.format(row.long, row.lat)
     placemark.append(name)
-    placemark.append(description)
-    placemark.append(point)
+    # placemark.append(description)
     placemark.append(extended_data)
+    placemark.append(point)
+
+
 
     ##Styling information
     style = Element("Style", id="ID")
@@ -119,10 +130,15 @@ document = Element("Document")
 kml.append(document)
 
 # print("ROWS")
+name = Element("name")
+name.text = "Golf Course"
+document.append(name)
+
 for row in rows:
     # print row.name, row.lat, row.long, row.data
     document.append(placemark(row))
     # print(tostring((document)))
+    break
 
 print tostring(kml, pretty_print=True)
 f.write(tostring(kml))
