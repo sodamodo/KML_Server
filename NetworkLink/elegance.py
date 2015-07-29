@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import requests
 import csv
 from collections import defaultdict, namedtuple
+from django.views.static import serve
 
 Point = namedtuple('Point', ['name', 'lat', 'long', 'data'])
 
@@ -153,6 +154,8 @@ for row in rows:
     break
 
 print tostring(kml, pretty_print=True)
+
+
 f.write(tostring(kml))
 f.close()
 print "done!"

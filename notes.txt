@@ -1,0 +1,3 @@
+Whatsup with namedtuple?
+and zipping
+and unpackking?

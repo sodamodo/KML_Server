@@ -12,7 +12,7 @@ from NetworkLink.views import path
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', 'NetworkLink.views.getpoints', name='getpoints'),
+    url(r'^$', 'NetworkLink.views.elegence', gname='getpoints'),
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
