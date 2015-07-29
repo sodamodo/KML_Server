@@ -10,6 +10,9 @@ from django.views.static import serve
 from KML_Server import settings
 import os
 from KML_Server.settings import BASE_DIR
+from django.core.servers.basehttp import FileWrapper
+from django.http import HttpResponseRedirect, HttpResponse
+
 
 # KML_HOLDER = os.path.join(BASE_DIR)
 
@@ -167,8 +170,16 @@ def fire(request):
     f.close()
     print "done!"
 
+    downloadfile = open('teh_kml.kml', 'rb')
 
-    return serve(request, )
+
+    response = HttpResponse(FileWrapper(downloadfile), content_type='application/vnd.google-earth.kml+xml;')
+    response['Content-Disposition'] = 'attachment; kml.kml'  # make custom download name
+    return response
+            # return HttpResponseRedirect(reverse('fly.views.upload'))
+
+
+
 
 #
 # filepath = 'C:\Users\Def\Documents\KML_Server\KML_Server\NetworkLink\teh_kml.kml'
