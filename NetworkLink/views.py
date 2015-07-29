@@ -118,33 +118,30 @@ from collections import defaultdict, namedtuple
 from django.views.static import serve
 from KML_Server import settings
 import os
-from KML_Server.settings import BASE_DIR
 from django.core.servers.basehttp import FileWrapper
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponse
 
 
 # KML_HOLDER = os.path.join(BASE_DIR)
 
 
 Point = namedtuple('Point', ['name', 'lat', 'long', 'data'])
+i = 0
+
 
 def placemark(row):
-    # for i in range(len(row.name)):
-    #     print i
 
-
-    placemark = Element('Placemark')
-    treeElement = ElementTree(placemark)
+    placemark = Element('Placemark', targetId=str(i))
+    # treeElement = ElementTree(placemark)
     name = Element('name')
 
-        ##data test##
 
     extended_data = Element('ExtendedData')
     # data = Element('Data', name="holeNumber")
 
-    displayname = Element('displayName')
-    displayname.text = "Hiiiii!"
-    # name = Element('name')
+    # displayname = Element('displayName')
+    # displayname.text = "Hiiiii!"
+    name = Element('name')
     name.text = row[0]
 
 
@@ -152,26 +149,16 @@ def placemark(row):
     streamtitle = Element('Data', name="Rivername")
     streamflow = Element('Data', name="Stream Flow")
     streamtitle.text = "{}".format(row.name)
+    streamflow.text = "{}".format(row.data)
     extended_data.append(streamtitle)
-    # streamtitle.text = row.data[3]
+    extended_data.append(streamflow)
 
-    # extended_data.append(streamtitle)
-
-    # flow_name = Element('value')
-    # flow_name.text = row.data[0]
-    #
-    # name_name = Element('value')
-    # name_name.text = row.data[0]
-    #
-    # flow_name.append(value)
-
-
-    # description = Element('description')
     point = Element('Point')
-    coordinates = SubElement(point, "coordinates")
+    # coordinates = SubElement(point, "coordinates")
+    coordinates = Element('coordinates')
     coordinates.text = '{},{}'.format(row.long, row.lat)
+    point.append(coordinates)
 
-    # description.text = "Attached to the ground. Intelligently places itself at the height of the underlying terrain"
 
     placemark.append(name)
     # placemark.append(description)
@@ -204,6 +191,7 @@ def makelists():
     names = []
     for r in soup.find_all("siteName"):
         names.append(r.contents)
+
 
 
     latitude = []
@@ -240,20 +228,18 @@ def makelists():
     data = zip(nameform, latform, lonform, values)
     points = [Point(*point) for point in data]
     # points = [Point(name, lat, long, data) for name, lat, long ,data in data]
+
     return points
 
 
 def fire(request):
+
     kml = Element('kml', xmlns="http://www.opengis.net/kml/2.2")
     document = Element("Document")
     document.text = "doooz" # delete later
     kml.append(document)
 
     f = open("teh_kml.kml", 'wb')
-
-    # print tostring(kml)
-
-    # range(len(makelists()[0]))
 
     rows = makelists()
 
@@ -266,12 +252,13 @@ def fire(request):
     name = Element("name")
     name.text = "Guaging Stations"
     document.append(name)
+    folder = Element("Folder")
 
     for row in rows:
         # print row.name, row.lat, row.long, row.data
         document.append(placemark(row))
         # print(tostring((document)))
-        # break
+
 
     print tostring(kml, pretty_print=True)
 
@@ -280,7 +267,7 @@ def fire(request):
     f.write(tostring(kml))
     f.close()
     print "done!"
-
+    #
     downloadfile = open('teh_kml.kml', 'rb')
 
 
