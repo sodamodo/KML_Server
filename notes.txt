@@ -16,6 +16,8 @@ Maybe have it sleep just before calling the API?
 Gotta really hit the styling hard
 Banish unicode U
 
+How do I read KMZ --- whats the deal with them?
+
 
 <Camera>
   <longitude>-121</longitude>
