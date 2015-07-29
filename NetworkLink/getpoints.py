@@ -1,4 +1,4 @@
-efrom bs4 import BeautifulSoup
+from bs4 import BeautifulSoup
 import requests
 import csv
 from collections import defaultdict
@@ -84,5 +84,7 @@ print raw_data
 # print(data_dict)
 
 f.close()
+
+
 
 # print aggregated

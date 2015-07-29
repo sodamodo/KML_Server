@@ -7,6 +7,12 @@ import requests
 import csv
 from collections import defaultdict, namedtuple
 from django.views.static import serve
+from KML_Server import settings
+import os
+from KML_Server.settings import BASE_DIR
+
+# KML_HOLDER = os.path.join(BASE_DIR)
+
 
 Point = namedtuple('Point', ['name', 'lat', 'long', 'data'])
 
@@ -124,112 +130,46 @@ def makelists():
     return points
 
 
-kml = Element('kml', xmlns="http://www.opengis.net/kml/2.2")
-document = Element("Document")
-document.text = "doooz" # delete later
-kml.append(document)
+def fire(request):
+    kml = Element('kml', xmlns="http://www.opengis.net/kml/2.2")
+    document = Element("Document")
+    document.text = "doooz" # delete later
+    kml.append(document)
 
-f = open("teh_kml.kml", 'wb')
+    f = open("teh_kml.kml", 'wb')
 
-# print tostring(kml)
+    # print tostring(kml)
 
-# range(len(makelists()[0]))
+    # range(len(makelists()[0]))
 
-rows = makelists()
+    rows = makelists()
 
-kml = Element('kml', xmlns="http://www.opengis.net/kml/2.2")
-# kml.text = "DocTest"
-document = Element("Document")
-kml.append(document)
+    kml = Element('kml', xmlns="http://www.opengis.net/kml/2.2")
+    # kml.text = "DocTest"
+    document = Element("Document")
+    kml.append(document)
 
-# print("ROWS")
-name = Element("name")
-name.text = "Guaging Stations"
-document.append(name)
+    # print("ROWS")
+    name = Element("name")
+    name.text = "Guaging Stations"
+    document.append(name)
 
-for row in rows:
-    # print row.name, row.lat, row.long, row.data
-    document.append(placemark(row))
-    # print(tostring((document)))
-    break
+    for row in rows:
+        # print row.name, row.lat, row.long, row.data
+        document.append(placemark(row))
+        # print(tostring((document)))
+        break
 
-print tostring(kml, pretty_print=True)
-
-
-f.write(tostring(kml))
-f.close()
-print "done!"
-
-f.close()
+    print tostring(kml, pretty_print=True)
 
 
-# i = 0
-# for row in f:
-#     i += 1
-#     document.append(placemark(row, i))
+    f.write(tostring(os.path.join(BASE_DIR, 'KML', kml)))
+    f.close()
+    print "done!"
 
 
-# pointsfile = open('kml_points.kml', 'wb')
-
-
-
-
-
-
-
-# f = open("teh_kml.kml", 'rt')
-
-
-# f.close()
+    return serve(request, )
 
 #
-# kmlstring = tostring(kml)
-# # print kmlstring
-# print(tostring(kml, pretty_print=True))
-# pointsfile.write(kmlstring)
-# pointsfile.close()
-# print "done!"
+# filepath = 'C:\Users\Def\Documents\KML_Server\KML_Server\NetworkLink\teh_kml.kml'
 
-
-
-# print makelists()
-# print "Hiiii!"
-# data = makelists()
-# collection = [[data[0], data[1], data[2], data[3]]]
-
-# names = data[0]
-# lat = data[1]
-# lon = data[2]
-# val = data[3]
-#
-# print len(val)
-#
-# for i in len(val)+1:
-#     print val[i][0], val[i][1], val[i][2], val[i][3]
-
-
-# lat =
-# print namesou
-# for i in range(len(names)):
-#     print len(names)
-#     print names[i]
-
-# , datavalues[0][0], datavalues[0][0], datavalues[0][0]
-# print len(names)
-
-
-
-# aggregated = []
-# for i in range(0, len(makelists())):
-#     aggregated.append([makelists()[0], makelists()[1], makelists()[2], makelists()[3]])
-#     print aggregated[i]
-    # writer.writerow(aggregated[i])
-
-
-
-
-#
-# data_dict = defaultdict(list)
-# for i in xrange(0, len(aggregated)):
-#     for k, v in (('name', aggregated[i][0]), ('latitude', aggregated[i][1]), ('longitude', aggregated[i][2]), ('value', aggregated[i][3])):
-#         data_dict[k].append(v)
