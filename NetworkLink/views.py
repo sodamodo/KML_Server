@@ -19,22 +19,23 @@ from django.shortcuts import render
 
 
 Point = namedtuple('Point', ['name', 'lat', 'long', 'data'])
-i = 0
+# Point = namedtuple('Point', ['name', 'lat', 'long', 'data'])
+
 
 def placemark(row):
 
-    placemark = Element('Placemark', targetId=str(i))
+    placemark = Element('Placemark', targetId="ID")
     name = Element('name')
-
-
     extended_data = Element('ExtendedData')
-    name = Element('name')
-    name.text = row[0]
+
+
 
     streamtitle = Element('Data', name="Rivername")
     streamflow = Element('Data', name="Stream Flow")
     streamtitle.text = "{}".format(row.name)
-    streamflow.text = "{}".format(row.data)
+    streamflow.text = "{}".format(str(row.data))
+    extended_data.append(streamtitle)
+    extended_data.append(streamflow)
 
     point = Element('Point')
     # coordinates = SubElement(point, "coordinates")
@@ -43,7 +44,7 @@ def placemark(row):
     point.append(coordinates)
 
 
-    placemark.append(name)
+    # placemark.append(name)
     # placemark.append(description)
     placemark.append(extended_data)
     placemark.append(point)
@@ -53,6 +54,8 @@ def placemark(row):
     ##Styling information
     style = Element("Style", id="ID")
     iconstyle = Element('IconStyle', id="ID")
+    scale = Element('scale')
+    iconstyle.append(scale)
     style.append(iconstyle)
     placemark.append(style)
     icon = Element("Icon")
@@ -63,7 +66,9 @@ def placemark(row):
     color = Element('color')
     iconstyle.append(color)
     color.text = '50DC783C'
+
     return placemark
+
 
 
 def makelists():
@@ -112,51 +117,56 @@ def makelists():
     points = [Point(*point) for point in data]
     # points = [Point(name, lat, long, data) for name, lat, long ,data in data]
 
+
     return points
 
 
 def fire(request):
+
+
+
     kml = Element('kml', xmlns="http://www.opengis.net/kml/2.2")
     document = Element("Document")
     document.text = "doooz" # d'elete later
     kml.append(document)
-
-    f = open(os.path.join(BASE_DIR, 'NetworkLink', 'static', 'NetworkLink', 'guages.kml'), 'wb')
-
-
     rows = makelists()
 
-    kml = Element('kml', xmlns="http://www.opengis.net/kml/2.2")
-    # kml.text = "DocTest"
-    document = Element("Document")
-    kml.append(document)
+
 
     # print("ROWS")
     name = Element("name")
     name.text = "Guaging Stations"
     document.append(name)
-    folder = Element("Folder")
+    # folder = Element("Folder")
 
     for row in rows:
         document.append(placemark(row))
+        continue
+
+    placemark_list = []
+    # for row in rows:
+    #     # placemark_list.append()
+    #     # document.append(placemark(row))
+    #     placemark(row)
 
     print tostring(kml, pretty_print=True)
 
 
+    # f = open(os.path.join(BASE_DIR, 'NetworkLink', 'static', 'NetworkLink', 'guages.kml'), 'wb')
+    # f.write(tostring(kml))
     # f.write(tostring(os.path.join('KML_Server', 'static')))
-    f.write(tostring(kml))
-    f.close()
+    # f.close()
 
 
-    return HttpResponse('')
-    print "done!"
-    # #
-    downloadfile = open('gauges.kml', 'rb')
-
-
-    response = HttpResponse(FileWrapper(downloadfile), content_type='application/vnd.google-earth.kml+xml;')
-    response['Content-Disposition'] = 'attachment; kml.kml'  # make custom download name
-    return response
+    return HttpResponse(tostring(kml))
+    # print "done!"
+    # # #
+    # downloadfile = open('gauges.kml', 'rb')
+    #
+    #
+    # response = HttpResponse(FileWrapper(downloadfile), content_type='application/vnd.google-earth.kml+mlml;')
+    # response['Content-Disposition'] = 'attachment; kml.kml'  # make custom download name
+    # return response
             # return HttpResponseRedirect(reverse('fly.views.upload'))
 
 def welcome(request):

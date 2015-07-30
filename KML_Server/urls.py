@@ -11,7 +11,7 @@ import os
 urlpatterns = patterns('',
     # Examples:
     url(r'fire', 'NetworkLink.views.fire', name='fire'),
-    url(r'update', 'NetworkLink.views.update', name='update'),
+    # url(r'update', 'NetworkLink.views.update', name='update'),
     # (r'^kml/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_DOC_ROOT}),
     url(r'welcome', 'NetworkLink.views.welcome', name='welcome'),
     # url(r'welcome', 'NetworkLink.views.gather', name='gather'),
