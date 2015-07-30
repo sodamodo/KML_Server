@@ -25,3 +25,9 @@ How do I read KMZ --- whats the deal with them?
   <altitude>2000</altitude>
   <altitudeMode>clampToGround</altitudeMode>
 </Camera>
+
+
+IT WORKS
+
+todo
+---

@@ -86,7 +86,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 
 STATIC_DOC_ROOT = os.path.join(BASE_DIR, 'KML')
 
@@ -94,8 +94,8 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
 
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, "NetworkLink",  "static"),
-# )
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "NetworkLink",  "static"),
+)
 
 # STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)

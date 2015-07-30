@@ -1,3 +1,4 @@
+from KML_Server.settings import BASE_DIR
 import xml.etree.ElementTree as etree
 from lxml.etree import ElementTree, Element, SubElement, tostring
 from xml.dom import minidom
@@ -12,14 +13,13 @@ import os
 from django.core.servers.basehttp import FileWrapper
 from django.http import HttpResponse
 import NetworkLink
-
+from django.shortcuts import render
 
 # KML_HOLDER = os.path.join(BASE_DIR)
 
 
 Point = namedtuple('Point', ['name', 'lat', 'long', 'data'])
 i = 0
-
 
 def placemark(row):
 
@@ -35,8 +35,6 @@ def placemark(row):
     streamflow = Element('Data', name="Stream Flow")
     streamtitle.text = "{}".format(row.name)
     streamflow.text = "{}".format(row.data)
-    extended_data.append(streamtitle)
-    extended_data.append(streamflow)
 
     point = Element('Point')
     # coordinates = SubElement(point, "coordinates")
@@ -120,10 +118,11 @@ def makelists():
 def fire(request):
     kml = Element('kml', xmlns="http://www.opengis.net/kml/2.2")
     document = Element("Document")
-    document.text = "doooz" # delete later
+    document.text = "doooz" # d'elete later
     kml.append(document)
 
-    f = open("teh_kml.kml", 'wb')
+    f = open(os.path.join(BASE_DIR, 'NetworkLink', 'static', 'NetworkLink', 'guages.kml'), 'wb')
+
 
     rows = makelists()
 
@@ -144,25 +143,21 @@ def fire(request):
     print tostring(kml, pretty_print=True)
 
 
-    f.write(tostring(os.path.join('KML_Server', 'static')))
+    # f.write(tostring(os.path.join('KML_Server', 'static')))
     f.write(tostring(kml))
     f.close()
 
 
     return HttpResponse('')
-    # print "done!"
-    # # #
-    # downloadfile = open('teh_kml.kml', 'rb')
-    #
-    #
-    # response = HttpResponse(FileWrapper(downloadfile), content_type='application/vnd.google-earth.kml+xml;')
-    # response['Content-Disposition'] = 'attachment; kml.kml'  # make custom download name
-    # return response
+    print "done!"
+    # #
+    downloadfile = open('gauges.kml', 'rb')
+
+
+    response = HttpResponse(FileWrapper(downloadfile), content_type='application/vnd.google-earth.kml+xml;')
+    response['Content-Disposition'] = 'attachment; kml.kml'  # make custom download name
+    return response
             # return HttpResponseRedirect(reverse('fly.views.upload'))
 
-
-
-
-#
-# filepath = 'C:\Users\Def\Documents\KML_Server\KML_Server\NetworkLink\teh_kml.kml'
-
+def welcome(request):
+    return render(request, 'Welcome.html')
