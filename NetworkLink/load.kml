@@ -3,7 +3,7 @@
 <NetworkLink>
   <name>Loads Point.kml</name>
   <Link>
-    <href>http://127.0.0.1:8000</href>
+    <href>http://127.0.0.1:8000/fire</href>
   </Link>
 </NetworkLink>
 </kml>
