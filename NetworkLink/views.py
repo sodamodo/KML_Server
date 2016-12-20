@@ -16,14 +16,16 @@ import NetworkLink
 from django.shortcuts import render
 from django.utils.encoding import smart_str
 import sys
-
 # KML_HOLDER = os.path.join(BASE_DIR)
 
 
 Point = namedtuple('Point', ['name', 'lat', 'long', 'data'])
 # Point = namedtuple('Point', ['name', 'lat', 'long', 'data'])
 
-
+"""
+This function takes the zipped tuple and uses the data inside of it to
+populate the xml for a Google Earth placemark
+"""
 def placemark(row):
 
     placemark = Element('Placemark', targetId="ID")
@@ -79,10 +81,9 @@ def makelists():
     soup = BeautifulSoup(r.text, "lxml-xml")
 
     names = []
-    for r in soup.find_all("siteName"):
-        names.append(r.contents)
-
-
+    for n in soup.find_all("siteName"):
+        names.append(n.contents)
+        print n.contents
 
     latitude = []
     for lat in soup.find_all("latitude"):
@@ -128,6 +129,22 @@ def fire(request):
     kml = Element('kml', xmlns="http://www.opengis.net/kml/2.2")
     document = Element("Document")
     kml.append(document)
+    camera = Element('LookAt')
+
+
+    longitude = Element('longitude')
+    latitude = Element('latitude')
+    altitude = Element('altitude')
+
+    longitude.text = "82.9001"
+    latitude.text = "32.1656"
+    altitude.text = "2000"
+
+    camera.append(longitude)
+    camera.append(latitude)
+    camera.append(altitude)
+    document.append(camera)
+
     points = makelists()
 
     name = Element("name")
@@ -148,3 +165,17 @@ def fire(request):
 
 def welcome(request):
     return render(request, 'Welcome.html')
+
+def toUnicode(s):
+    if type(s) is unicode:
+        return s
+    elif type(s) is str:
+        d = chardet.detect(s)
+        (cs, conf) = (d['encoding'], d['confidence'])
+        if conf > 0.80:
+            try:
+                return s.decode( cs, errors = 'replace' )
+            except Exception as ex:
+                pass
+    # force and return only ascii subset
+    return unicode(''.join( [ i if ord(i) < 128 else ' ' for i in s ]))
